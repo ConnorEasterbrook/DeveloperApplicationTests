@@ -17,8 +17,6 @@ namespace SureviewApplicationTest
                 string pattern = @"\b(server|alarm)\s*(\d+)\b|\b(\d+)\b";
                 MatchCollection matches = Regex.Matches(input, pattern, RegexOptions.IgnoreCase);
 
-
-
                 foreach(Match match in matches)
                 {
                     string keyword = match.Groups[1].Success ? match.Groups[1].Value.ToLower() : null;

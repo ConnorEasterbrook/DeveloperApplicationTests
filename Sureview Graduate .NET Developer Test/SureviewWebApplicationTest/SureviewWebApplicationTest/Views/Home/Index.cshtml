@@ -7,25 +7,28 @@
 <form asp-action="Index" method="post">
     <div class="text-center">
         <h1 id="title" class="display-4">Security Input</h1>
-        <p>Please enter your information.</p>
+        <p>Please enter your information.<br /> Note that if you only enter numbers then the input will be taken as SERVER NUMBER & ALARM NUMBER respectively.</p>
 
-        <div class="form-group">
-            <label asp-for="serverID">Server Number</label>
-            <input type="number" class="form-control" id="serverID" asp-for="serverID" required />
-            <span asp-validation-for="serverID" class="text-danger"></span>
+        @*<div class="form-group">
+        <label asp-for="serverID">Server Number</label>
+        <input type="number" class="form-control" id="serverID" asp-for="serverID" required />
+        <span asp-validation-for="serverID" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="alarmID">Alarm Number</label>
-            <input type="number" class="form-control" id="alarmID" asp-for="alarmID" required />
-            <span asp-validation-for="alarmID" class="text-danger"></span>
-        </div>
-
-        @*<p>Server Number: <input type="number" asp-for="serverID" /></p>
-        <p>Alarm Number: <input type="number" asp-for="alarmID" /></p>*@
+        <label asp-for="alarmID">Alarm Number</label>
+        <input type="number" class="form-control" id="alarmID" asp-for="alarmID" required />
+        <span asp-validation-for="alarmID" class="text-danger"></span>
+        </div>*@
 
         <div class="form-group">
-            <p><input type="submit" value="submit" /></p>
+            <label asp-for="input">Input string</label>
+            <input type="text" class="form-control" id="input" asp-for="input" required />
+            <span asp-validation-for="input" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <p><input class="submit-button" type="submit" value="submit" /></p>
         </div>
 
         <br><br />
@@ -41,9 +44,43 @@
     {
         event.preventDefault();
 
-        var serverID = document.querySelector('#serverID').value;
-        var alarmID = document.querySelector('#alarmID').value;
+        var serverNumber = 0;
+        var alarmNumber = 0;
 
-        document.querySelector('#output').textContent = 'Alarm id ' + alarmID + ' has been received from video server number ' + serverID + '.';
+        var input = document.querySelector('#input').value;
+        var pattern = /\b(server|alarm)\s*(\d+)\b|\b(\d+)\b/gi;
+        var matches = input.matchAll(pattern);
+
+        for (const match of matches)
+        {
+            var keyword = match[1] ? match[1].toLowerCase() : null;
+            var number = match[2] ? parseInt(match[2]) : parseInt(match[3]);
+
+            if (keyword === "server" && serverNumber === 0)
+            {
+                serverNumber = number;
+            }
+            else if (keyword === "alarm" && alarmNumber === 0)
+            {
+                alarmNumber = number;
+            }
+            else if (serverNumber === 0)
+            {
+                serverNumber = number;
+            }
+            else if (alarmNumber === 0)
+            {
+                alarmNumber = number;
+            }
+        }
+
+        if (serverNumber !== 0 && alarmNumber !== 0)
+        {
+            document.querySelector('#output').textContent = 'Alarm id ' + alarmNumber + ' has been received from video server number ' + serverNumber + '.';
+        }
+        else
+        {
+            document.querySelector('#output').textContent = 'Invalid input. Please enter a valid string with server and alarm numbers.';
+        }
     });
 </script>

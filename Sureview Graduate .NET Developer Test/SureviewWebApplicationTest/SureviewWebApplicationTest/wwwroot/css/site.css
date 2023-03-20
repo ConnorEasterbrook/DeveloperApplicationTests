@@ -42,9 +42,12 @@ body {
     margin-bottom: 60px;
 }
 
+#title {
+    margin-top: 15px;
+}
+
 input {
     width: 100%;
-    max-width: 100px;
     margin: 0 auto;
     text-align: center;
     margin-bottom: 20px;
@@ -58,6 +61,11 @@ input {
     overflow-x: visible;
 }
 
-#title {
-    margin-top: 15px;
+.submit-button
+{
+    width: 100%;
+    max-width: 100px;
+    border-radius: 10px;
 }
+
+
