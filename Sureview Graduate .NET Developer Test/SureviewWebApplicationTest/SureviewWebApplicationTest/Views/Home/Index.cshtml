@@ -2,7 +2,31 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@model InputHandler
+
+<form asp-action="Index" method="post">
+    <div class="text-center">
+        <h1 id="title" class="display-4">Security Input</h1>
+        <p>Please enter your information.</p>
+
+        <p>Server Number: <input type="number" asp-for="serverID" /></p>
+        <p>Alarm Number: <input type="number" asp-for="alarmID" /></p>
+        <p><input type="submit" value="submit" /></p>
+
+        <br><br />
+
+        <label id="output"></label>
+    </div>
+</form>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function (event)
+    {
+        event.preventDefault();
+
+        var serverID = document.querySelector('#serverID').value;
+        var alarmID = document.querySelector('#alarmID').value;
+
+        document.querySelector('#output').textContent = 'Alarm id ' + alarmID + ' has been received from video server number ' + serverID + '.';
+    });
+</script>
