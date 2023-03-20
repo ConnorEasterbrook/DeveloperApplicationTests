@@ -1,0 +1,64 @@
+﻿<Window x:Class="SureviewDesktopApplicationTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SureviewDesktopApplicationTest"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="540" Width="860"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+
+    <Grid>
+        <!-- Grid Shape & Background -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border CornerRadius="20 0 0 20" Background="White" />
+            <Border Grid.Column="1" CornerRadius="0 20 20 0" Background="Black" />
+        </Grid>
+        
+        <!-- Grid Controls -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Side -->
+            <StackPanel>
+                <TextBlock Text="Security Input" FontSize="35" HorizontalAlignment="Center" Padding="0 10 0 0" Margin="5" />
+
+                <Border Style="{StaticResource viewBorder}">
+                    <TextBox x:Name="contentInput" Text="Enter text here" 
+                         GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" KeyDown="TextBox_KeyDown" Width="380"/>
+                </Border>
+
+                <Border Style="{StaticResource viewBorder}" Width="75" Padding="0" Margin="0 5 0 20">
+                    <Button Content="Submit" Margin="10" Width="50" Click="SubmitButton_Click" HorizontalAlignment="Center" 
+                            BorderThickness="0" Background="Transparent" FontSize="15" />
+                </Border>
+
+                <Border Style="{StaticResource viewBorder}">
+                    <Label x:Name="resultLabel" Margin="10" Content="Result: " />
+                </Border>
+            </StackPanel>
+
+            <!-- Right Side -->
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="Security Outputs" FontSize="35" Foreground="White" HorizontalAlignment="Center" Padding="0 10 0 0" Margin="5" />
+
+                <DataGrid x:Name="InputTable" AutoGenerateColumns="False" Width="350">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Server Number" Binding="{Binding ServerNumber}" />
+                        <DataGridTextColumn Header="Alarm Number" Binding="{Binding AlarmNumber}" />
+                        <DataGridTextColumn Header="Timestamp" Binding="{Binding Timestamp}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</Window>
