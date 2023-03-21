@@ -33,6 +33,24 @@ namespace SureviewDesktopApplicationTest
             InitializeComponent();
         }
 
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if(e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            window.Close();
+        }
+
+        private void Minimize_Click(object sender, RoutedEventArgs e)
+        {
+            window.WindowState = WindowState.Minimized;
+        }
+
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             if(((TextBox)sender).Text == "Enter text here")

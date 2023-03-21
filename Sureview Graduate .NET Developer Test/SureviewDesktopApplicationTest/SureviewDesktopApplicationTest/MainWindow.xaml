@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SureviewDesktopApplicationTest"
         mc:Ignorable="d"
-        Title="Sureview Desktop Application Test" Height="540" Width="860"
-        WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" Background="Transparent"
+        Title="Sureview Desktop Application Test" x:Name="window" Height="540" Width="860"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         Style="{StaticResource CustomWindowStyle}" ResizeMode="NoResize">
 
 
-    <Grid>
+    <Grid MouseLeftButtonDown="Grid_MouseLeftButtonDown">
         <!-- Grid Shape & Background -->
         <Grid>
             <Grid.ColumnDefinitions>
@@ -21,7 +21,7 @@
             <Border CornerRadius="0 0 0 20" Background="White" />
             <Border Grid.Column="1" CornerRadius="0 0 20 0" Background="Black" />
         </Grid>
-        
+
         <!-- Grid Controls -->
         <Grid>
             <Grid.ColumnDefinitions>
@@ -38,8 +38,8 @@
                          GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" KeyDown="TextBox_KeyDown" Width="380"/>
                 </Border>
 
-                <Border Style="{StaticResource viewBorder}" Width="75" Padding="0" Margin="0 5 0 20">
-                    <Button Content="Submit" Margin="10" Width="50" Click="SubmitButton_Click" HorizontalAlignment="Center" 
+                <Border Style="{StaticResource buttonPress}" Width="96" Padding="0" Margin="0 5 0 20" Height="34">
+                    <Button Content="Submit" Width="96" Click="SubmitButton_Click" HorizontalAlignment="Center" 
                             BorderThickness="0" Background="Transparent" FontSize="15" />
                 </Border>
 
@@ -47,14 +47,35 @@
                     <Label x:Name="resultLabel" Margin="10" Content="Result: " />
                 </Border>
 
-                <Border Style="{StaticResource viewBorder}" Width="75" Padding="0" Margin="0 5 0 20">
-                    <Button Content="Confirm" Margin="10" Width="60" Click="ConfirmButton_Click" HorizontalAlignment="Center" 
+                <Border Style="{StaticResource buttonPress}" Width="96" Padding="0" Margin="0 5 0 20" Height="34">
+                    <Button Content="Confirm" Width="96" Click="ConfirmButton_Click" HorizontalAlignment="Center" 
                             BorderThickness="0" Background="Transparent" FontSize="15" />
                 </Border>
             </StackPanel>
 
             <!-- Right Side -->
-            <StackPanel Grid.Column="1">
+            <StackPanel Grid.ColumnSpan="2" Margin="450,0,0,0">
+                <Grid>
+                    <Grid VerticalAlignment="Center" Height="17" HorizontalAlignment="Left" Width="100" Margin="310,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="0*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Width="20" Click="Close_Click" Style="{StaticResource IconButtonStyle}" Margin="80,0,0,0">
+                            <Border CornerRadius="5" Background="White">
+                                <Image Source="pack://application:,,,/Resources/Images/close.png" Width="15" />
+                            </Border>
+                        </Button>
+
+                        <Button  Width="20" Click="Minimize_Click" Style="{StaticResource IconButtonStyle}" Margin="60,0,20,0">
+                            <Border CornerRadius="5" Background="White">
+                                <Image Source="pack://application:,,,/Resources/Images/dash.png" Width="15"/>
+                            </Border>
+                        </Button>
+                    </Grid>
+                </Grid>
+
                 <TextBlock Text="Security Outputs" FontSize="35" Foreground="White" HorizontalAlignment="Center" Margin="10" />
 
                 <DataGrid x:Name="InputTable" AutoGenerateColumns="False" Width="375" HorizontalAlignment="Center"

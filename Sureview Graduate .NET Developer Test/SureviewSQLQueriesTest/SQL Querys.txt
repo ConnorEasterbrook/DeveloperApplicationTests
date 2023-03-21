@@ -1,0 +1,20 @@
+Query 1:
+SELECT * FROM DeviceCamera WHERE DeviceID = 1;
+
+==
+
+Query 2:
+SELECT * FROM Device WHERE DeviceID IN (SELECT DISTINCT DeviceID FROM DeviceCamera);
+
+==
+
+Query 3:
+SELECT d.* FROM Device d INNER JOIN DeviceCamera dc ON d.DeviceID = dc.DeviceID WHERE dc.Name LIKE 'Front%';
+
+==
+
+Query 4:
+UPDATE DeviceCamera SET Name = 'Front Door Camera' WHERE DeviceID = 1984 AND CameraNumber = 2;
+
+You can check with:
+SELECT * FROM DeviceCamera WHERE DeviceID = 1984 AND CameraNumber = 2;
