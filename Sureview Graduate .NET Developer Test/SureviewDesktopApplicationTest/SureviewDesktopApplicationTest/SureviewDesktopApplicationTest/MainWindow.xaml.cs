@@ -24,6 +24,9 @@ namespace SureviewDesktopApplicationTest
     public partial class MainWindow : Window
     {
         private ObservableCollection<InputData> inputDataList = new ObservableCollection<InputData>();
+        private int serverNumber = 0;
+        private int alarmNumber = 0;
+        private bool validResult = false;
 
         public MainWindow()
         {
@@ -50,72 +53,21 @@ namespace SureviewDesktopApplicationTest
         {
             if(e.Key == Key.Enter)
             {
-                string input = ((TextBox)sender).Text;
-                Submit(input);
-            }
-        }
-
-        private void Submit(string input)
-        {
-            Console.WriteLine("Please enter the relevant information.\nNote that if you only enter numbers then the input will be taken as SERVER NUMBER & ALARM NUMBER respectively.");
-
-            int serverNumber = 0;
-            int alarmNumber = 0;
-
-            string pattern = @"\b(server|alarm)\s*(\d+)\b|\b(\d+)\b";
-            MatchCollection matches = Regex.Matches(input, pattern, RegexOptions.IgnoreCase);
-
-            foreach(Match match in matches)
-            {
-                string? keyword = match.Groups[1].Success ? match.Groups[1].Value.ToLower() : null;
-                int number = int.Parse(match.Groups[2].Success ? match.Groups[2].Value : match.Groups[3].Value);
-
-                if(keyword == "server" && serverNumber == 0)
-                {
-                    serverNumber = number;
-                }
-                else if(keyword == "alarm" && alarmNumber == 0)
-                {
-                    alarmNumber = number;
-                }
-                else if(serverNumber == 0)
-                {
-                    serverNumber = number;
-                }
-                else if(alarmNumber == 0)
-                {
-                    alarmNumber = number;
-                }
-            }
-
-            if(serverNumber != 0 && alarmNumber != 0)
-            {
-                resultLabel.Content = ("Alarm id " + alarmNumber + " has been received from video server number " + serverNumber + ".");
-
-                var inputData = new InputData
-                {
-                    ServerNumber = serverNumber,
-                    AlarmNumber = alarmNumber,
-                    Timestamp = DateTime.Now
-                };
-
-                inputDataList.Add(inputData);
-                UpdateInputTable();
-            }
-            else
-            {
-                serverNumber = 0;
-                alarmNumber = 0;
-
-                resultLabel.Content =  ("Invalid input. Please enter both server and alarm numbers.");
+                CheckInput();
             }
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
+            CheckInput();
+        }
+
+        private void CheckInput()
+        {
             string input = contentInput.Text;
-            int serverNumber = 0;
-            int alarmNumber = 0;
+            validResult = false;
+            serverNumber = 0;
+            alarmNumber = 0;
 
             string pattern = @"\b(server|alarm)\s*(\d+)\b|\b(\d+)\b";
             MatchCollection matches = Regex.Matches(input, pattern, RegexOptions.IgnoreCase);
@@ -145,7 +97,18 @@ namespace SureviewDesktopApplicationTest
             if(serverNumber != 0 && alarmNumber != 0)
             {
                 resultLabel.Content = ("Alarm id " + alarmNumber + " has been received from video server number " + serverNumber + ".");
+                validResult = true;
+            }
+            else
+            {
+                resultLabel.Content = ("Invalid input. Please enter both server and alarm numbers.");
+            }
+        }
 
+        private void ConfirmButton_Click(object sender, EventArgs e)
+        {
+            if(validResult)
+            {
                 var inputData = new InputData
                 {
                     ServerNumber = serverNumber,
@@ -155,13 +118,13 @@ namespace SureviewDesktopApplicationTest
 
                 inputDataList.Add(inputData);
                 UpdateInputTable();
-            }
-            else
-            {
+
+                contentInput.Text = "Enter text here";
+                resultLabel.Content = ("Result: ");
+
+                validResult = false;
                 serverNumber = 0;
                 alarmNumber = 0;
-
-                resultLabel.Content = ("Invalid input. Please enter both server and alarm numbers.");
             }
         }
 
@@ -169,6 +132,20 @@ namespace SureviewDesktopApplicationTest
         {
             InputTable.ItemsSource = null;
             InputTable.ItemsSource = inputDataList;
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if(button != null)
+            {
+                var item = button.DataContext as InputData;
+
+                if(item != null)
+                {
+                    inputDataList.Remove(item);
+                }
+            }
         }
 
         public class InputData

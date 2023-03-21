@@ -5,31 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SureviewDesktopApplicationTest"
         mc:Ignorable="d"
-        Title="MainWindow" Height="540" Width="860"
-        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+        Title="Sureview Desktop Application Test" Height="540" Width="860"
+        WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" Background="Transparent"
+        Style="{StaticResource CustomWindowStyle}" ResizeMode="NoResize">
+
 
     <Grid>
         <!-- Grid Shape & Background -->
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.2*" />
+                <ColumnDefinition Width="1.1*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Border CornerRadius="20 0 0 20" Background="White" />
-            <Border Grid.Column="1" CornerRadius="0 20 20 0" Background="Black" />
+            <Border CornerRadius="0 0 0 20" Background="White" />
+            <Border Grid.Column="1" CornerRadius="0 0 20 0" Background="Black" />
         </Grid>
         
         <!-- Grid Controls -->
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.2*" />
+                <ColumnDefinition Width="1.1*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <!-- Left Side -->
             <StackPanel>
-                <TextBlock Text="Security Input" FontSize="35" HorizontalAlignment="Center" Padding="0 10 0 0" Margin="5" />
+                <TextBlock Text="Security Input" FontSize="35" HorizontalAlignment="Center" Margin="10" />
 
                 <Border Style="{StaticResource viewBorder}">
                     <TextBox x:Name="contentInput" Text="Enter text here" 
@@ -44,17 +46,31 @@
                 <Border Style="{StaticResource viewBorder}">
                     <Label x:Name="resultLabel" Margin="10" Content="Result: " />
                 </Border>
+
+                <Border Style="{StaticResource viewBorder}" Width="75" Padding="0" Margin="0 5 0 20">
+                    <Button Content="Confirm" Margin="10" Width="60" Click="ConfirmButton_Click" HorizontalAlignment="Center" 
+                            BorderThickness="0" Background="Transparent" FontSize="15" />
+                </Border>
             </StackPanel>
 
             <!-- Right Side -->
             <StackPanel Grid.Column="1">
-                <TextBlock Text="Security Outputs" FontSize="35" Foreground="White" HorizontalAlignment="Center" Padding="0 10 0 0" Margin="5" />
+                <TextBlock Text="Security Outputs" FontSize="35" Foreground="White" HorizontalAlignment="Center" Margin="10" />
 
-                <DataGrid x:Name="InputTable" AutoGenerateColumns="False" Width="350">
+                <DataGrid x:Name="InputTable" AutoGenerateColumns="False" Width="375" HorizontalAlignment="Center"
+                          CanUserAddRows="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Server Number" Binding="{Binding ServerNumber}" />
                         <DataGridTextColumn Header="Alarm Number" Binding="{Binding AlarmNumber}" />
                         <DataGridTextColumn Header="Timestamp" Binding="{Binding Timestamp}" />
+
+                        <DataGridTemplateColumn Header="Delete">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Delete" Click="DeleteButton_Click" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
