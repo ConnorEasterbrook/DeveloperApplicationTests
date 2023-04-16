@@ -38,29 +38,43 @@ namespace NET_MVC_Environment.Controllers
 
             string tableName = "TestTable";
 
-            if (_database.TableExists(tableName))
+            if(!_database.TableExists(tableName))
             {
-                _database.RemoveTable(tableName);
+                string[] columnNames = { "Id INT IDENTITY PRIMARY KEY", "Name VARCHAR(50)", "Email VARCHAR(80)" };
+                _database.AddTable(tableName, columnNames);
             }
 
-            string[] columnNames = { "Id INT PRIMARY KEY", "Name VARCHAR(50)", "Email VARCHAR(80)" };
-            _database.AddTable(tableName, columnNames);
-
-            string[] rowValues = { "1", "'John Doe'", "'john.doe@example.com'" };
-            _database.AddData(tableName, rowValues);
-
-            DataRow row = _database.SelectRow(tableName, "Id = 1");
-            Debug.WriteLine("\n\n" + row["Name"] + " " + row["Email"] + "\n\n");
-
-            _database.RemoveData(tableName, "Id = 1");
-
-            _database.RemoveTable(tableName);
             _database.CloseConnection();
         }
 
-        public IActionResult Privacy()
+        public IActionResult GetAllData(string tableName = "TestTable")
         {
-            return View();
+            try
+            {
+                _database.OpenConnection();
+
+                var data = _database.GetAllData(tableName);
+
+                _database.CloseConnection();
+                return Json(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult AddContact(string name, string email, string tableName = "TestTable")
+        {
+            _database.OpenConnection();
+            string[] rowValues = { name, email };
+            _database.AddData(tableName, rowValues);
+
+            Debug.WriteLine("\n\n" + name + " " + email + "\n\n");
+
+            _database.CloseConnection();
+            return Json(new { success = true });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
