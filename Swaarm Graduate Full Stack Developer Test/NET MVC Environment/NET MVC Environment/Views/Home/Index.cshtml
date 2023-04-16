@@ -13,7 +13,17 @@
         <input type="email" id="email-input" placeholder="Email" />
         <button id="submit-button" onclick="submitInfo()">Submit</button>
 
-        <div id="data-container"></div>
+        <div>
+            <table id="db-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody id="data-container"></tbody>
+            </table>
+        </div>
     </div>
 
     <script>
@@ -26,13 +36,16 @@
                     let html = '';
                     for (const obj of data)
                     {
+                        html += '<tr>';
                         for (const [key, value] of Object.entries(obj))
                         {
-                            if (key !== 'id')
+                            if (key === 'id')
                             {
-                                html += `<div>${key} - ${value}</div>`;
+                                continue;
                             }
+                            html += `<td>${value}</td>`;
                         }
+                        html += '</tr>';
                     }
                     document.querySelector('#data-container').innerHTML = html;
                 })

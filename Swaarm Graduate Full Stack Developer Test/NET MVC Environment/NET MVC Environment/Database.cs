@@ -92,10 +92,12 @@ namespace NET_MVC_Environment
             foreach(DataRow row in dataSet.Tables[tableName].Rows)
             {
                 Dictionary<string, object> dict = new Dictionary<string, object>();
-                foreach(DataColumn col in dataSet.Tables[tableName].Columns)
+
+                for(int i = 1; i < dataSet.Tables[tableName].Columns.Count; i++)
                 {
-                    dict[col.ColumnName] = row[col];
+                    dict[dataSet.Tables[tableName].Columns[i].ColumnName] = row[i];
                 }
+
                 result.Add(dict);
             }
 

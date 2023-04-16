@@ -1,31 +1,115 @@
-html {
-  font-size: 14px;
+html
+{
+    font-size: 14px;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+@media (min-width: 768px)
+{
+    html
+    {
+        font-size: 16px;
+    }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus
+{
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+html
+{
+    position: relative;
+    min-height: 100%;
 }
 
-body {
-  background-color: #3e3e3e;
-  margin-bottom: 60px;
+body
+{
+    background-color: #3e3e3e;
+    margin-bottom: 60px;
 }
 
-#container {
+#container
+{
     background-color: #bdbdbd;
     margin: 25px 0px;
     border: 1px solid #000;
     border-radius: 8px;
     box-shadow: 0 0 10px #000;
+}
+
+#db-table
+{
+    position: relative;
+    justify-content: center;
+    background-color: #bdbdbd;
+    width: 50%;
+    margin: 25px auto;
+    border-radius: 16px;
+    box-shadow: 0 0 10px #000;
+}
+
+    #db-table th,
+    #db-table td
+    {
+        padding: 10px;
+    }
+
+    #db-table thead
+    {
+        background-color: #6ea0d5;
+        border-radius: inherit;
+    }
+
+        #db-table thead th
+        {
+            color: #000;
+            font-weight: bold;
+            text-align: center;
+        }
+
+            #db-table thead th:nth-child(1)
+            {
+                border-top-left-radius: 16px;
+                border-right: solid 1px;
+            }
+
+            #db-table thead th:nth-child(2)
+            {
+                border-top-right-radius: 16px;
+            }
+
+    #db-table tbody tr
+    {
+        background-color: #e1e1e1;
+        border-radius: inherit;
+    }
+
+        #db-table tbody tr:nth-child(odd)
+        {
+            background-color: #efefef;
+        }
+
+        #db-table tbody tr:hover
+        {
+            background-color: #d1d1d1;
+        }
+
+        #db-table tbody tr:last-child td:nth-child(1)
+        {
+            border-bottom-left-radius: 10px;
+        }
+
+        #db-table tbody tr:last-child td:nth-child(2)
+        {
+            border-bottom-right-radius: 10px;
+        }
+
+    #db-table tbody td
+    {
+        text-align: left;
+    }
+
+#db-table tbody td:nth-child(1)
+{
+    border-right: solid 1px;
 }
