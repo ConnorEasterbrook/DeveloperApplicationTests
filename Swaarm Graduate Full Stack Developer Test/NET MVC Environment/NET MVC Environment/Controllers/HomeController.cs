@@ -77,6 +77,18 @@ namespace NET_MVC_Environment.Controllers
             return Json(new { success = true });
         }
 
+        [HttpPost]
+        public ActionResult ClearTable()
+        {
+            _database.OpenConnection();
+
+            string tableName = "TestTable";
+            _database.RemoveData(tableName);
+
+            _database.CloseConnection();
+            return Json(new { success = true });
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

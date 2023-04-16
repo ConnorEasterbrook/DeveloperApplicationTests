@@ -13,16 +13,20 @@
         <input type="email" id="email-input" placeholder="Email" />
         <button id="submit-button" onclick="submitInfo()">Submit</button>
 
-        <div>
-            <table id="db-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody id="data-container"></tbody>
-            </table>
+        <div id="data-section">
+            <div>
+                <table id="db-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-container"></tbody>
+                </table>
+            </div>
+
+            <button id="clear-button" onclick="clearTable()">Clear Table</button>
         </div>
     </div>
 
@@ -33,6 +37,14 @@
                 .then(response => response.json())
                 .then(data =>
                 {
+                    if (data.length === 0)
+                    {
+                        hideDataSection();
+                        return;
+                    }
+
+                    showDataSection();
+
                     let html = '';
                     for (const obj of data)
                     {
@@ -54,6 +66,18 @@
                     console.error(error);
                     alert("An error occurred while fetching the data.");
                 });
+        }
+
+        function hideDataSection()
+        {
+            document.querySelector('#data-section').style.display = 'none';
+            return;
+        }
+
+        function showDataSection()
+        {
+            document.querySelector('#data-section').style.display = 'block';
+            return;
         }
 
         fetchAllData();
@@ -89,6 +113,23 @@
         {
             var re = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
             return re.test(email);
+        }
+
+        function clearTable()
+        {
+            $.ajax({
+                url: "/Home/ClearTable",
+                type: "POST",
+                success: function (result) 
+                {
+                    alert("Success");
+                    fetchAllData();
+                },
+                error: function (xhr, textStatus, errorThrown) 
+                {
+                    alert("An error occurred while calling the C# function.");
+                }
+            });
         }
     </script>
 </div>

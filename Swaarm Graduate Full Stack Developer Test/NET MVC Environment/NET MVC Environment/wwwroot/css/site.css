@@ -28,10 +28,25 @@ body
     margin-bottom: 60px;
 }
 
+button
+{
+    font-weight: bold;
+    border: 1px solid #000;
+    border-radius: 4px;
+    background-color: #ff9797;
+    transition: all 0.2s ease-in-out;
+}
+
+    button:hover
+    {
+        background-color: #ff6f6f;
+    }
+
 #container
 {
     background-color: #bdbdbd;
     margin: 25px 0px;
+    padding: 25px;
     border: 1px solid #000;
     border-radius: 8px;
     box-shadow: 0 0 10px #000;
@@ -82,6 +97,7 @@ body
     {
         background-color: #e1e1e1;
         border-radius: inherit;
+        transition: all 0.2s ease-in-out;
     }
 
         #db-table tbody tr:nth-child(odd)
@@ -112,4 +128,12 @@ body
 #db-table tbody td:nth-child(1)
 {
     border-right: solid 1px;
+}
+
+#clear-button
+{
+    min-width: 100px;
+    width: 15%;
+    max-width: 250px;
+    padding: 10px;
 }

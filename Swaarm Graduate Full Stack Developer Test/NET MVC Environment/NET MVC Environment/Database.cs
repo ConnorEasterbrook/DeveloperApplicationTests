@@ -104,9 +104,18 @@ namespace NET_MVC_Environment
             return result;
         }
 
-        public void RemoveData(string tableName, string condition)
+        public void RemoveData(string tableName, string condition = "")
         {
-            string query = $"DELETE FROM {tableName} WHERE {condition}";
+            string query = "";
+            if(condition != "")
+            {
+                query = $"DELETE FROM {tableName} WHERE {condition}";
+            }
+            else
+            {  
+                query = $"DELETE FROM {tableName}";
+            }
+
             SqlCommand command = new SqlCommand(query, _connection);
             command.ExecuteNonQuery();
         }
