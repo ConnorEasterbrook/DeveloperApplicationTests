@@ -18,5 +18,14 @@ html {
 }
 
 body {
+  background-color: #3e3e3e;
   margin-bottom: 60px;
+}
+
+#container {
+    background-color: #bdbdbd;
+    margin: 25px 0px;
+    border: 1px solid #000;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #000;
 }
