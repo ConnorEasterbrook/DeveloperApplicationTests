@@ -30,6 +30,7 @@ body
 
 button
 {
+    padding: 5px;
     font-weight: bold;
     border: 1px solid #000;
     border-radius: 4px;
@@ -41,6 +42,13 @@ button
     {
         background-color: #ff6f6f;
     }
+
+input
+{
+    padding: 5px;
+    border: 1px solid #000;
+    border-radius: 4px;
+}
 
 #container
 {
@@ -90,8 +98,14 @@ button
 
             #db-table thead th:nth-child(2)
             {
-                border-top-right-radius: 16px;
+                border-right: solid 1px;
             }
+
+                #db-table thead th:nth-last-child(1)
+                {
+                    border-top-right-radius: 16px;
+                    border-left: solid 1px;
+                }
 
     #db-table tbody tr
     {
@@ -115,7 +129,7 @@ button
             border-bottom-left-radius: 10px;
         }
 
-        #db-table tbody tr:last-child td:nth-child(2)
+        #db-table tbody tr:last-child td:nth-last-child(1)
         {
             border-bottom-right-radius: 10px;
         }
@@ -125,9 +139,15 @@ button
         text-align: left;
     }
 
-#db-table tbody td:nth-child(1)
+#db-table tbody td:nth-child(1), #db-table tbody td:nth-child(2)
 {
     border-right: solid 1px;
+}
+
+#db-table tbody td:nth-last-child(1)
+{
+    text-align: center;
+    border-left: solid 1px;
 }
 
 #clear-button

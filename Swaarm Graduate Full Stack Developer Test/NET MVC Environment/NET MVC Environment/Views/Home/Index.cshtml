@@ -5,12 +5,11 @@
 <div id="root">
     <div class="text-center" id="container">
         <div>
-            <h1 class="display-4">Swaarm Graduate Full Stack Developer Test</h1>
+            <h1 class="display-4" style="font-weight:bold">Swaarm Graduate Full Stack Developer Test</h1>
             <p>Started Monday 16/04/2023 16:00:00.</p>
         </div>
 
         <input type="text" id="name-input" placeholder="Name" />
-        <input type="email" id="email-input" placeholder="Email" />
         <button id="submit-button" onclick="submitInfo()">Submit</button>
 
         <div id="data-section">
@@ -18,11 +17,13 @@
                 <table id="db-table">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Email</th>
+                            <th onclick="sortFunc(1)">Name</th>
+                            <th onclick="sortFunc(2)">Created</th>
+                            <th onclick="sortFunc(3)">Modified</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
-                    <tbody id="data-container"></tbody>
+                    <tbody id="data-container" onclick="editInfo(event)"></tbody>
                 </table>
             </div>
 
@@ -31,6 +32,9 @@
     </div>
 
     <script>
+        let elementID = 1;
+        let desc = true;
+
         function fetchAllData()
         {
             fetch('@Url.Action("GetAllData", "Home")')
@@ -57,8 +61,10 @@
                             }
                             html += `<td>${value}</td>`;
                         }
+                        html += `<td><button onclick="deleteInfo(event)">Delete</button></td>`;
                         html += '</tr>';
                     }
+
                     document.querySelector('#data-container').innerHTML = html;
                 })
                 .catch(error =>
@@ -85,18 +91,16 @@
         function submitInfo() 
         {
             var name = $('#name-input').val();
-            var email = $('#email-input').val();
+            var dateTime = new Date();
+            var date = dateTime.getFullYear() + '-' + (dateTime.getMonth() + 1) + '-' + dateTime.getDate();
+            var time = dateTime.getHours() + ":" + dateTime.getMinutes() + ":" + dateTime.getSeconds();
 
-            if (!validateEmail(email)) 
-            {
-                alert("Please enter a valid email address.");
-                return;
-            }
+            var timeString = date + ' ' + time;
 
             $.ajax({
-                url: "/Home/AddContact",
+                url: "/Home/CreateData",
                 type: "POST",
-                data: { name: name, email: email },
+                data: { name: name, date: timeString },
                 success: function (result) 
                 {
                     alert("Success");
@@ -109,10 +113,59 @@
             });
         }
 
-        function validateEmail(email) 
+        function editInfo(event)
         {
-            var re = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
-            return re.test(email);
+            var dateTime = new Date();
+            var date = dateTime.getFullYear() + '-' + (dateTime.getMonth() + 1) + '-' + dateTime.getDate();
+            var time = dateTime.getHours() + ":" + dateTime.getMinutes() + ":" + dateTime.getSeconds();
+
+            var timeString = date + ' ' + time;
+
+            const td = event.target.parentNode.firstElementChild;
+            if (td.tagName === 'TD')
+            {
+                const value = td.textContent;
+                const newValue = prompt('Enter a new name:', value);
+                if (newValue && newValue !== value)
+                {
+                    const originalValue = value;
+                    $.ajax({
+                        url: "/Home/UpdateData",
+                        type: "POST",
+                        data: { oldName: originalValue, name: newValue, date: timeString },
+                        success: function (result)
+                        {
+                            alert("Success");
+                            fetchAllData();
+                        },
+                        error: function (xhr, textStatus, errorThrown)
+                        {
+                            alert("An error occurred while calling the C# function.");
+                        }
+                    });
+                }
+            }
+        }
+
+        function deleteInfo(event)
+        {
+            const tr = event.target.closest('tr');
+            const name = tr.firstElementChild.textContent;
+
+            $.ajax({
+                url: "/Home/DeleteData",
+                type: "GET",
+                data: { name: name },
+                success: function (result)
+                {
+                    alert("Success");
+                    fetchAllData();
+                },
+                error: function (xhr, textStatus, errorThrown)
+                {
+                    alert("An error occurred while calling the C# function.");
+                }
+            });
         }
 
         function clearTable()
@@ -130,6 +183,55 @@
                     alert("An error occurred while calling the C# function.");
                 }
             });
+        }
+
+        function sortFunc(tempElement)
+        {
+            if (tempElement === elementID)
+            {
+                if (desc === false)
+                {
+                    desc = true;
+                }
+                else
+                {
+                    desc = false;
+                }
+            }
+            else if (tempElement === 1)
+            {
+                elementID = 1;
+            }
+            else if (tempElement === 2)
+            {
+                elementID = 2;
+            }
+            else if (tempElement === 3)
+            {
+                elementID = 3;
+            }
+
+            console.log(desc + " " + elementID);
+
+            $.ajax({
+                type: 'POST',
+                url: '/Home/SetSort',
+                data: { descending: desc, elementID: elementID },
+                success: function (result)
+                {
+                    alert("Success");
+                    fetchAllData();
+                },
+                error: function (xhr, status, error)
+                {
+                    alert("An error occurred while calling the C# function.");
+                }
+            });
+        }
+
+        function getElement(tempElement)
+        {
+            
         }
     </script>
 </div>

@@ -11,6 +11,7 @@ namespace NET_MVC_Environment.Controllers
         private readonly ILogger<HomeController> _logger;
 
         private Database _database;
+        public List<Data> dataClass = new List<Data>();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -40,11 +41,19 @@ namespace NET_MVC_Environment.Controllers
 
             if(!_database.TableExists(tableName))
             {
-                string[] columnNames = { "Id INT IDENTITY PRIMARY KEY", "Name VARCHAR(50)", "Email VARCHAR(80)" };
+                string[] columnNames = { "Id INT IDENTITY PRIMARY KEY", "Name VARCHAR(50)", "CreatedDate DATETIME DEFAULT (GETDATE())", "LastUpdatedDate DATETIME DEFAULT (GETDATE())" };
                 _database.AddTable(tableName, columnNames);
             }
 
+            dataClass = _database.GetDataForList(tableName);
+
             _database.CloseConnection();
+        }
+
+        public IActionResult SetSort(bool descending, int elementID)
+        {
+            _database.SetVariables(descending, elementID);
+            return Json(new { success = true });
         }
 
         public IActionResult GetAllData(string tableName = "TestTable")
@@ -65,14 +74,28 @@ namespace NET_MVC_Environment.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddContact(string name, string email, string tableName = "TestTable")
+        public ActionResult CreateData(string name, string date, string tableName = "TestTable")
         {
             _database.OpenConnection();
-            string[] rowValues = { name, email };
-            _database.AddData(tableName, rowValues);
+            _database.AddData(tableName, name, date);
+            _database.CloseConnection();
+            return Json(new { success = true });
+        }
 
-            Debug.WriteLine("\n\n" + name + " " + email + "\n\n");
+        [HttpPost]
+        public IActionResult UpdateData(string oldName, string name, string date, string tableName = "TestTable")
+        {
+            _database.OpenConnection();
+            _database.UpdateData(tableName, oldName, name, date);
+            _database.CloseConnection();
+            return Json(new { success = true });
+        }
 
+        [HttpGet]
+        public IActionResult DeleteData(string name, string tableName = "TestTable")
+        {
+            _database.OpenConnection();
+            _database.RemoveData(tableName, name);
             _database.CloseConnection();
             return Json(new { success = true });
         }
